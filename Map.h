@@ -5,15 +5,15 @@
 #include <string>
 #include <iostream>
 
-class Map {
+struct Map {
 
-    public:
-    
-    int width, height;    
-    Map (int w, int h) {
+    int width, height;
+    int tileWidth, tileHeight;
+    Map (int w, int h, int tWidth, int tHeight) {
         width=w;
         height=h;
-
+        tileWidth = tWidth;
+        tileHeight = tHeight;
     }
 
 };

@@ -5,13 +5,13 @@
 #include <string>
 #include <iostream>
 
-struct Point {int x, int y};
+struct Point {int x; int y;};
 
 struct Tile {
 
     Point pos;
     int width, height;
-    string sprite;
+    std::string sprite;
     bool isWalkable;
 };
 
