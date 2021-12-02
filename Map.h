@@ -4,18 +4,17 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include "Tile.h"
+class Map {
 
-struct Map {
-
+    public:
     int width, height;
     int tileWidth, tileHeight;
-    Map (int w, int h, int tWidth, int tHeight) {
-        width=w;
-        height=h;
-        tileWidth = tWidth;
-        tileHeight = tHeight;
-    }
-
+    std::vector<Tile> grid;
+    Map (int w, int h, int tWidth, int tHeight);
+    std::vector<Tile> init();
+    void render();
 };
 
     

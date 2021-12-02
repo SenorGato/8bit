@@ -1,5 +1,5 @@
 #OBJS defines files to compile
-OBJS = main.cpp
+OBJS = main.cpp Map.cpp
 CC = g++
 COMPILER_FLAGS = -w
 LINKER_FLAGS = -lSDL2
