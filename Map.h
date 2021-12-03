@@ -14,7 +14,6 @@ class Map {
     std::vector<Tile> grid;
     Map (int w, int h, int tWidth, int tHeight);
     std::vector<Tile> init();
-    void render();
 };
 
     

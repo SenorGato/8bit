@@ -6,10 +6,10 @@ Map::Map(int w, int h, int tWidth, int tHeight) {
         height = h;
         tileWidth = tWidth;
         tileHeight = tHeight;
+        init();        
 }
 
 std::vector<Tile> Map::init(){
-        std::cout <<"In init loop\n";
        int numXTiles, numYTiles;
        numXTiles = width / tileWidth;
        numYTiles = height / tileHeight;
@@ -20,10 +20,3 @@ std::vector<Tile> Map::init(){
        }
        return grid;
 }
-
-void Map::render(){
-
-
-
-}
-
