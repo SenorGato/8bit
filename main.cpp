@@ -6,13 +6,6 @@
 #include <string>
 #include "Map.h"
 
-//string assets = './assets';
-//SDL Init
-
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
 //Starts up SDL and creates window
 bool init();
 
@@ -99,14 +92,6 @@ int main (int argc, char* argv[]) {
 
     Map gamestate(800,800,10,10);
 
-    for(int i = 0; i < gamestate.grid.size(); i++) {
-        if (i%2) {
-            gamestate.grid.at(i).sprite = "1";
-        } else {
-            gamestate.grid.at(i).sprite= "2";
-    	}
-	}
-
 	if( !init(gamestate.width, gamestate.height) ) {
 		printf( "Failed to load media!\n" );
 	}
@@ -123,16 +108,21 @@ int main (int argc, char* argv[]) {
 			//Apply the image
 			
 			SDL_Rect testRect;
-			testRect.x = 100;
-			testRect.y = 100;
-
-			SDL_BlitSurface( tile, NULL, gScreenSurface, &testRect);
-			
+			testRect.x = 0;
+			testRect.y = 0;
+		
+			for(int i = 0; i < (gamestate.width/24); i++) {
+				testRect.x = testRect.x + 24;
+				testRect.y = 0;
+				for(int p = 0; p < (gamestate.height/24); p++) {
+					testRect.y = testRect.y + 24;
+					SDL_BlitSurface( tile, NULL, gScreenSurface, &testRect);
+				}
+			}
 			//Update the surface
 			SDL_UpdateWindowSurface( gWindow );
-
 			//Wait two seconds
-			SDL_Delay( 8000 );
+			SDL_Delay( 2000 );
 		}
 	}
 
