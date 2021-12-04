@@ -36,23 +36,23 @@ SDL_Rect Menu::buildMenu(SDL_Surface* dest, int height, std::vector<std::string>
 	SDL_Renderer* gRenderer = NULL;
 	TTF_Font* sans = TTF_OpenFont("./assets/Sans.ttf", 12);
 	SDL_Color textColor = {0,0,0};
-
-
-// Render some text in solid black to a new surface
-// then blit to the upper left of the screen
-// then free the text surface
-//SDL_Surface *screen;
-//SDL_Color color={0,0,0};
-//SDL_Surface *text_surface;
-//if(!(text_surface=TTF_RenderText_Solid(sans,"Hello World!",color))) {
-//    handle error here, perhaps print TTF_GetError at least
-//} else {
-//    SDL_BlitSurface(text_surface,NULL,screen,NULL);
-//    perhaps we can reuse it, but I assume not for simplicity.
-//    SDL_FreeSurface(text_surface);
-//}
+	SDL_Surface* textSurface = TTF_RenderText_Solid(sans, c, textColor );
+	SDL_BlitSurface(textSurface, NULL, dest, NULL);
+	
+ //Render some text in solid black to a hsurface
+ //then blit to the upper left of the screen
+ //then free the text surface
+	SDL_Surface *screen;
+	SDL_Color color={0,0,0};
+	SDL_Surface *text_surface;
+	if(!(text_surface=TTF_RenderText_Solid(sans,"Hello World!",color))) {
+	//handle error here, perhaps print TTF_GetError at least
+	} else {
+		SDL_BlitSurface(text_surface,NULL,dest,NULL);
+	//perhaps we can reuse it, but I assume not for simplicity.
+		SDL_FreeSurface(text_surface);
+	}
 	std::cout << "Sans" << sans << " c" << c << std::endl;
-	//SDL_Surface* textSurface = TTF_RenderText_Solid(sans, c, textColor );
 	
 	//if( textSurface == NULL )
 	//{
