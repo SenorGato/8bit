@@ -131,8 +131,9 @@ int main (int argc, char* argv[]) {
 	}
 	
 	std::vector<std::string> keys {"1","2","3"};
-	Menu test(gScreenSurface, keys, 24);
-	SDL_UpdateWindowSurface(gWindow);
+	Menu test(gScreenSurface, keys, 32, gWindow);
+	//SDL_UpdateWindowSurface(gWindow);
+	SDL_Delay(2000);
 	//Free resources and close SDL
 	//close();
 	return 0;

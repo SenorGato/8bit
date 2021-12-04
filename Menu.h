@@ -11,6 +11,6 @@ class Menu {
 	SDL_Surface* menuSurface;
 	std::vector<std::string> keys;
 	int height;
-	Menu(SDL_Surface* dest, std::vector<std::string> keys, int h);
-	SDL_Rect buildMenu(SDL_Surface* dest, int h, std::vector<std::string> keys);
+	Menu(SDL_Surface* dest, std::vector<std::string> keys, int h, SDL_Window* w);
+	SDL_Rect buildMenu(SDL_Surface* dest, int h, std::vector<std::string> keys, SDL_Window* w);
 };
