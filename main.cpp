@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <SDL2/SDL_ttf.h>
+#include <vector>
 #include "Map.h"
+#include "Menu.h"
 
 //Starts up SDL and creates window
 bool init();
@@ -72,9 +75,6 @@ void close()
 
 bool loadMedia(std::string tileImage)
 {
-	//Loading success flag
-	bool success = true;
-
 	//Load splash image
 	std::string path = "./assets/" + tileImage;
 	const char * c = path.c_str();
@@ -82,10 +82,8 @@ bool loadMedia(std::string tileImage)
 	if( tile == NULL )
 	{
 		printf( "Unable to load image %s! SDL Error: %s\n", "tile.bmp", SDL_GetError() );
-		success = false;
 	}
-
-	return success;
+	return true;
 }
 
 int main (int argc, char* argv[]) {
@@ -126,6 +124,14 @@ int main (int argc, char* argv[]) {
 		}
 	}
 
+	//Initialize SDL_ttf
+	if( TTF_Init() == -1 )
+	{
+		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
+
+	std::vector<std::string> keys {"1","2","3"};
+	//Menu test(gScreenSurface, keys, 24);
 	//Free resources and close SDL
 	close();
 }

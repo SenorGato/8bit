@@ -1,8 +1,8 @@
 #OBJS defines files to compile
-OBJS = main.cpp Map.cpp
+OBJS = main.cpp Map.cpp Menu.cpp
 CC = g++
 COMPILER_FLAGS = -w
-LINKER_FLAGS = -lSDL2
+LINKER_FLAGS = -lSDL2 -lSDL2_ttf
 OBJ_NAME = rpg
 
 all : $(OBJS) 
