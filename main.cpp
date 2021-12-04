@@ -90,48 +90,54 @@ int main (int argc, char* argv[]) {
 
     Map gamestate(800,800,10,10);
 
-	if( !init(gamestate.width, gamestate.height) ) {
-		printf( "Failed to load media!\n" );
+	//if( !init(gamestate.width, gamestate.height) ) {
+	//    printf( "Failed to load media!\n" );
+	//}
+	//else
+	//{
+	//    //Load media
+	//    std::string media = "blacktiletiny.bmp";
+	//    if( !loadMedia(media) )
+	//    {
+	//        printf( "Failed to load media!\n" );
+	//    }
+	//    else
+	//    {
+	//        //Apply the image
+	//        
+	//        SDL_Rect testRect;
+	//        testRect.x = 0;
+	//        testRect.y = 0;
+	//    
+	//        for(int i = 0; i < (gamestate.width/24); i++) {
+	//            testRect.x = testRect.x + 24;
+	//            testRect.y = 0;
+	//            for(int p = 0; p < (gamestate.height/24); p++) {
+	//                testRect.y = testRect.y + 24;
+	//                //SDL_BlitSurface( tile, NULL, gScreenSurface, &testRect);
+	//            }
+	//        }
+	//        //Update the surface
+	//        SDL_UpdateWindowSurface( gWindow );
+	//        //Wait two seconds
+	//        SDL_Delay( 1000 );
+	//    }
+	//}
+	if (init(10,10)) {
+		std::cout << "in init" << std::endl;
+	} else {
+		std::cout << "failed to init" << std::endl;
+		return 1;
 	}
-	else
-	{
-		//Load media
-		std::string media = "blacktiletiny.bmp";
-		if( !loadMedia(media) )
-		{
-			printf( "Failed to load media!\n" );
-		}
-		else
-		{
-			//Apply the image
-			
-			SDL_Rect testRect;
-			testRect.x = 0;
-			testRect.y = 0;
 		
-			for(int i = 0; i < (gamestate.width/24); i++) {
-				testRect.x = testRect.x + 24;
-				testRect.y = 0;
-				for(int p = 0; p < (gamestate.height/24); p++) {
-					testRect.y = testRect.y + 24;
-					SDL_BlitSurface( tile, NULL, gScreenSurface, &testRect);
-				}
-			}
-			//Update the surface
-			SDL_UpdateWindowSurface( gWindow );
-			//Wait two seconds
-			SDL_Delay( 2000 );
-		}
-	}
-
-	//Initialize SDL_ttf
 	if( TTF_Init() == -1 )
 	{
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
-
+	
 	std::vector<std::string> keys {"1","2","3"};
-	//Menu test(gScreenSurface, keys, 24);
+	Menu test(gScreenSurface, keys, 24);
 	//Free resources and close SDL
-	close();
+	//close();
+	return 0;
 }
