@@ -10,14 +10,28 @@ struct menuItem {
     std::string key;
     SDL_Surface* renderedSurface;
     
-    menuItem() {};
-    menuItem(menuItem* parent) {};
-    menuItem(menuItem* parent, menuItem* sibling) {};
+    menuItem(){};
+    menuItem(menuItem* parent){};
+    menuItem(menuItem* parent, menuItem* sibling) {
+        this->parent = parent;
+        this ->sibling = sibling;
+    };
+};
+
+struct fontData{
+    SDL_Color textColor;
+    TTF_Font* font;
+    SDL_Renderer *renderer;
+    fontData(SDL_Color textColor, TTF_Font* font, SDL_Renderer *renderer){
+        this->textColor = textColor;
+        this->font = font;
+        this ->renderer = renderer;
+    };
 };
 
 std::vector<menuItem> mainMenu;
     
-
+//Build a struct that holds all this data, init struct in main() pass struct to initMenu
 void initMenu(std::vector<std::string> keys, menuItem* parent = NULL){
     menuItem* sib = new menuItem();
     if (parent == NULL) {
@@ -25,6 +39,7 @@ void initMenu(std::vector<std::string> keys, menuItem* parent = NULL){
             mainMenu.push_back (new menuItem{parent, sib});
             mainMenu.back().key = key;
             sib = &mainMenu.back();
+            //mainMenu.back().renderedSurface = renderText(key, )
         }
     } else {
         for(std::string key : keys) {
@@ -35,37 +50,16 @@ void initMenu(std::vector<std::string> keys, menuItem* parent = NULL){
     }
 }
 
-SDL_Texture* renderText(std::string key, SDL_Color textColor, TTF_Font* font, SDL_Renderer *renderer) {
-    //I should free the texture here first
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font,key.c_str(), textColor); 
-    if(textSurface == NULL) {
-        std::cout << "Unable to render text surface! SDL_ttf Error:" << TTF_GetError() << std::endl;
-    } else {
-
-        SDL_Texture* mTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-        if(mTexture == NULL) {
-            std::cout << "Unable to create from rendered text! SDL Error:" << SDL_GetError() << std::endl;
-        } else {
-            int mWidth = textSurface->w;
-            int mHeight = textSurface->h;
-        }
-        SDL_FreeSurface(textSurface);
-    return mTexture;
-    }
-}
 SDL_Renderer* init(){
 
     SDL_Window *win = NULL;
     SDL_Renderer *renderer = NULL;
-    SDL_Surface *winScreenSurface;
     if(SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "SDL could not init! SDL_Error:" << SDL_GetError() << std::endl;
     } else {
-        win = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 100, 100, SDL_WINDOW_SHOWN);        
+        win = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN);        
         if (win == NULL) {
             std::cout << "Window could not be created! SDL_Error:" << SDL_GetError() << std::endl;
-        } else {
-            winScreenSurface = SDL_GetWindowSurface(win);
         }
     }
     
@@ -75,6 +69,21 @@ SDL_Renderer* init(){
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     return renderer;
 } 
+
+SDL_Texture* renderText(std::string key, SDL_Color textColor, TTF_Font* font, SDL_Renderer *renderer) {
+    //I should free the texture here first
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font,key.c_str(), textColor); 
+    if(textSurface == NULL) {
+        std::cout << "Unable to render text surface! SDL_ttf Error:" << TTF_GetError() << std::endl;
+    } else {
+        SDL_Texture* mTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        if(mTexture == NULL) {
+            std::cout << "Unable to create from rendered text! SDL Error:" << SDL_GetError() << std::endl;
+        }
+        SDL_FreeSurface(textSurface);
+    return mTexture;
+    }
+}
 
 int main() {
     std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
@@ -90,7 +99,6 @@ int main() {
 
     SDL_bool loopShouldStop = SDL_FALSE;
     SDL_Renderer *mRender = init();
-    SDL_Texture *mTex;
     SDL_Color textColor = {100,10,10};
     
     TTF_Font *sans = TTF_OpenFont("/home/senoraraton/bins/8bit/assets/Sans.ttf", 12);
@@ -98,7 +106,8 @@ int main() {
         std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;
     }
 
-    mTex = renderText("Testing",textColor, sans, mRender);
+    SDL_Texture *mTex = renderText("Testing",textColor, sans, mRender);
+    SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
     
     while (!loopShouldStop) {
         SDL_Event event;
@@ -112,7 +121,7 @@ int main() {
             }
         }
         SDL_RenderClear(mRender);
-        SDL_RenderCopy(mRender,mTex, NULL, NULL);
+        SDL_RenderCopy(mRender,mTex, NULL, dstrect);
         SDL_RenderPresent(mRender);
     }
 }
