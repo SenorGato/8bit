@@ -1,5 +1,5 @@
 #OBJS defines files to compile
-OBJS = testbase.cpp 
+OBJS = main.cpp 
 CC = g++
 COMPILER_FLAGS = -w -g
 LINKER_FLAGS = -lSDL2 -lSDL2_ttf 

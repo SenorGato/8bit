@@ -68,6 +68,10 @@ SDL_Renderer* init(){
             winScreenSurface = SDL_GetWindowSurface(win);
         }
     }
+    
+    if(TTF_Init() == -1) {
+        std::cout << "SDF_ttf could not initalize! SDL_ttf Error:" << TTF_GetError() << std::endl;
+    }
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     return renderer;
 } 
@@ -85,20 +89,17 @@ int main() {
     initMenu(aboutLevel, &mainMenu.at(3));
 
     SDL_bool loopShouldStop = SDL_FALSE;
-
-    SDL_Renderer *mRender = NULL;    
-    mRender = init();
-    if(TTF_Init() == -1) {
-        std::cout << "SDF_ttf could not initalize! SDL_ttf Error:" << TTF_GetError() << std::endl;
-    }
+    SDL_Renderer *mRender = init();
+    SDL_Texture *mTex;
     SDL_Color textColor = {100,10,10};
+    
     TTF_Font *sans = TTF_OpenFont("/home/senoraraton/bins/8bit/assets/Sans.ttf", 12);
-
     if (sans == NULL) {
         std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;
     }
-    SDL_Texture *mTex;
+
     mTex = renderText("Testing",textColor, sans, mRender);
+    
     while (!loopShouldStop) {
         SDL_Event event;
         while (SDL_PollEvent(&event))
