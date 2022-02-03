@@ -4,13 +4,17 @@
 
 #include <string>
 #include <vector>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
 
 class Menu {
 	
 	public:
-	SDL_Surface* menuSurface;
-	std::vector<std::string> keys;
+    std::string keys;
 	int height;
-	Menu(SDL_Surface* dest, std::vector<std::string> keys, int h);
-	SDL_Surface* buildMenu(SDL_Surface* dest, int h, std::vector<std::string> keys);
+    SDL_Surface* menuSurface;
+    Menu(std::vector<std::string> keys, int height);
+    std::vector<Menu> initMenu(std::vector<std::string> keys, int height);
+    bool onClick(); 
 };
