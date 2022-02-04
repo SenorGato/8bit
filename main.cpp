@@ -104,10 +104,10 @@ int main() {
     std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
     initMenu(topLevel,mainMenu);
-    initMenu(fileLevel,menuFont, mainMenu->head);
-    initMenu(editLevel, menuFont, mainMenu->head->sibling);
-    initMenu(helpLevel, menuFont, mainMenu->head->sibling->sibling);
-    initMenu(aboutLevel, menuFont, mainMenu->head->sibling->sibling);
+    initMenu(fileLevel,mainMenu, mainMenu->head);
+    initMenu(editLevel, mainMenu, mainMenu->head->sibling);
+    initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
+    initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
     
     SDL_Texture *mTex = renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
