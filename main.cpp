@@ -30,7 +30,13 @@ struct fontData{
     }
 };
 
-std::vector<menuItem*> mainMenu;
+class Menu {
+    public:
+    menuItem *head;
+    fontData *font;
+    int height;
+    std::string backgroundColor;
+};
 
 SDL_Renderer* init(){
 
@@ -68,31 +74,15 @@ SDL_Texture* renderText(std::string key, fontData *data) {
     return NULL;
 }
 
-void initMenu(std::vector<std::string> keys, fontData* font, menuItem* parent = new menuItem()){
+void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent = new menuItem()){
     menuItem* sib = new menuItem();
-    //if (parent == NULL) {
-    //    std::cout << "Your in the NULL parent loop" << std::endl;
-    //    for (std::string key : keys){
-    //        std::cout << "In the for loop now. Key:" << key << std::endl;
-    //        menuItem* temp = new menuItem{parent, sib, key};
-    //        mainMenu.push_back(temp);
-    //        mainMenu.back()->renderedSurface = renderText(key,font);
-    //        sib = mainMenu.back();
-    //        std::cout << "End of for, testing assignment:" << mainMenu.back()->key << std::endl;
-    //    }
-    //} else {
-        for(std::string key : keys) {
-            std::cout << "Now your in the children loop.  Key:" << key << std::endl;
-            parent->children.push_back (new menuItem{parent, sib, key});
-            parent->children.back()->renderedSurface = renderText(key,font);
-            sib = parent->children.back();
-            std::cout << "end of child for, test assign:" << parent->children.back()->key << std::endl;
-        }
+    for(std::string key : keys) {
+        std::cout << "Now your in the children loop.  Key:" << key << std::endl;
+        parent->children.push_back (new menuItem{parent, sib, key});
+        parent->children.back()->renderedSurface = renderText(key,menu->font);
+        sib = parent->children.back();
+        std::cout << "end of child for, test assign:" << parent->children.back()->key << std::endl;
     }
-//}
-
-void buildMenu(menuItem menu){
-    std::cout << "The data you want:" << &menu.key << std::endl;
 }
 
 int main() {
@@ -101,31 +91,27 @@ int main() {
     SDL_Renderer *mRender = init();
     
     TTF_Font *sans = TTF_OpenFont("/home/senoraraton/bins/8bit/assets/Sans.ttf", 12);
-
-    if (sans == NULL) {
-        std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;
-    }
-
+    
+    if (sans == NULL) {std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;}
 
     fontData *menuFont = new fontData({10,100,100}, sans, mRender);
-    SDL_Texture *mTex = renderText("Testing",menuFont);
-    SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
+    Menu *mainMenu = new Menu();    
+    mainMenu->font = menuFont;
+
     std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
     std::vector<std::string> fileLevel = {"Open", "Save", "Save As"}; 
     std::vector<std::string> editLevel = {"F", "E", "H", "A"}; 
     std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
-    initMenu(topLevel,menuFont);
-    initMenu(fileLevel,menuFont, mainMenu.at(0));
-    initMenu(editLevel, menuFont, mainMenu.at(1));
-    initMenu(helpLevel, menuFont, mainMenu.at(2));
-    initMenu(aboutLevel, menuFont, mainMenu.at(3));
+    initMenu(topLevel,mainMenu);
+    //initMenu(fileLevel,menuFont, mainMenu.at(0));
+    //initMenu(editLevel, menuFont, mainMenu.at(1));
+    //initMenu(helpLevel, menuFont, mainMenu.at(2));
+    //initMenu(aboutLevel, menuFont, mainMenu.at(3));
     
-    //for_each (mainMenu.begin(), mainMenu.end(),buildMenu);
-    //for (menuItem x : mainMenu)
-    //    std::cout << x.key << std::endl;
-    //std::cout << "Data:" << mainMenu[2].key << std::endl;
-
+    SDL_Texture *mTex = renderText("Testing",menuFont);
+    SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
+    
     while (!loopShouldStop) {
         SDL_Event event;
         while (SDL_PollEvent(&event))
