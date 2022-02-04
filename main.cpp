@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <algorithm>
 
 struct menuItem {
     menuItem* parent;
@@ -86,6 +86,29 @@ void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent){
     }
 }
 
+menuItem* fetchMenuItem(std::string key, menuItem* head){
+    std::cout << "At start of fetchMenu" << std::endl;
+    if(&head->children) {
+        std::cout << "Head has a child->" << &head->children << std::endl;
+        for(menuItem *child : head->children){
+            std::cout << "In the child loop. Child:" << child->key << std::endl;
+            std::cout << "And the key is:" << key << std::endl;
+            if (child->key == key) {
+                std::cout << "We have a match:" << child->key << std::endl;
+                return child;
+            } else {
+                std::cout << "Making recursive call" << std::endl;
+                fetchMenuItem(key, child);
+            }
+        }
+    } else {
+        std::cout << "No childs." << std::endl;
+        if(head->key == key) {
+            return head;
+        }
+    }
+}
+
 int main() {
 
     SDL_bool loopShouldStop = SDL_FALSE;
@@ -109,7 +132,8 @@ int main() {
     //initMenu(editLevel, mainMenu, mainMenu->head->sibling);
     //initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
     //initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
-    
+    menuItem *query = fetchMenuItem("Save As", mainMenu->head);
+    std::cout << "Query->key:" << query->key << std::endl;    
     SDL_Texture *mTex = renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
     
