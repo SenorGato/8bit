@@ -12,7 +12,6 @@ struct menuItem {
     SDL_Texture* renderedSurface;
     
     menuItem(){};
-    //menuItem(menuItem* parent){};
     menuItem(menuItem* parent, menuItem* sibling, std::string key) {
         this->parent = parent;
         this->sibling = sibling;
@@ -31,7 +30,7 @@ struct fontData{
     }
 };
 
-std::vector<menuItem> mainMenu;
+std::vector<menuItem*> mainMenu;
 
 SDL_Renderer* init(){
 
@@ -69,18 +68,19 @@ SDL_Texture* renderText(std::string key, fontData *data) {
     return NULL;
 }
 
-void initMenu(std::vector<std::string> keys, fontData* font, menuItem* parent = NULL){
+void initMenu(std::vector<std::string> keys, fontData* font, menuItem* parent = new menuItem()){
     menuItem* sib = new menuItem();
-    if (parent == NULL) {
-        std::cout << "Your in the NULL parent loop" << std::endl;
-        for (std::string key : keys){
-            std::cout << "In the for loop now. Key:" << key << std::endl;
-            mainMenu.push_back (new menuItem{parent, sib, key});
-            mainMenu.back().renderedSurface = renderText(key,font);
-            sib = &mainMenu.back();
-            std::cout << "End of for, testing assignment:" << mainMenu.back().key << std::endl;
-        }
-    } else {
+    //if (parent == NULL) {
+    //    std::cout << "Your in the NULL parent loop" << std::endl;
+    //    for (std::string key : keys){
+    //        std::cout << "In the for loop now. Key:" << key << std::endl;
+    //        menuItem* temp = new menuItem{parent, sib, key};
+    //        mainMenu.push_back(temp);
+    //        mainMenu.back()->renderedSurface = renderText(key,font);
+    //        sib = mainMenu.back();
+    //        std::cout << "End of for, testing assignment:" << mainMenu.back()->key << std::endl;
+    //    }
+    //} else {
         for(std::string key : keys) {
             std::cout << "Now your in the children loop.  Key:" << key << std::endl;
             parent->children.push_back (new menuItem{parent, sib, key});
@@ -89,7 +89,7 @@ void initMenu(std::vector<std::string> keys, fontData* font, menuItem* parent = 
             std::cout << "end of child for, test assign:" << parent->children.back()->key << std::endl;
         }
     }
-}
+//}
 
 void buildMenu(menuItem menu){
     std::cout << "The data you want:" << &menu.key << std::endl;
@@ -116,15 +116,15 @@ int main() {
     std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
     initMenu(topLevel,menuFont);
-    initMenu(fileLevel,menuFont, &mainMenu.at(0));
-    initMenu(editLevel, menuFont, &mainMenu.at(1));
-    initMenu(helpLevel, menuFont, &mainMenu.at(2));
-    initMenu(aboutLevel, menuFont, &mainMenu.at(3));
+    initMenu(fileLevel,menuFont, mainMenu.at(0));
+    initMenu(editLevel, menuFont, mainMenu.at(1));
+    initMenu(helpLevel, menuFont, mainMenu.at(2));
+    initMenu(aboutLevel, menuFont, mainMenu.at(3));
     
     //for_each (mainMenu.begin(), mainMenu.end(),buildMenu);
     //for (menuItem x : mainMenu)
     //    std::cout << x.key << std::endl;
-    std::cout << "Data:" << mainMenu[2].key << std::endl;
+    //std::cout << "Data:" << mainMenu[2].key << std::endl;
 
     while (!loopShouldStop) {
         SDL_Event event;
