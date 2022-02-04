@@ -6,15 +6,12 @@
 
 struct menuItem {
     menuItem* parent;
-    menuItem* sibling;
     std::vector<menuItem*> children;
     std::string key;
     SDL_Texture* renderedSurface;
     
-    menuItem(){};
-    menuItem(menuItem* parent, menuItem* sibling, std::string key) {
+    menuItem(menuItem* parent, std::string key) {
         this->parent = parent;
-        this->sibling = sibling;
         this->key = key;
     };
 };
@@ -35,7 +32,13 @@ class Menu {
     menuItem *head;
     fontData *font;
     int height;
-    std::string backgroundColor;
+    std::string bgColor;
+    Menu(fontData *font, int height, std::string bgColor){
+        this->head = new menuItem{nullptr,""}; 
+        this->font = font;
+        this->height = height;
+        this->bgColor = bgColor;
+    }
 };
 
 SDL_Renderer* init(){
@@ -74,13 +77,11 @@ SDL_Texture* renderText(std::string key, fontData *data) {
     return NULL;
 }
 
-void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent = new menuItem()){
-    menuItem* sib = new menuItem();
+void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent){
     for(std::string key : keys) {
         std::cout << "Now your in the children loop.  Key:" << key << std::endl;
-        parent->children.push_back (new menuItem{parent, sib, key});
+        parent->children.push_back (new menuItem{parent, key});
         parent->children.back()->renderedSurface = renderText(key,menu->font);
-        sib = parent->children.back();
         std::cout << "end of child for, test assign:" << parent->children.back()->key << std::endl;
     }
 }
@@ -95,7 +96,7 @@ int main() {
     if (sans == NULL) {std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;}
 
     fontData *menuFont = new fontData({10,100,100}, sans, mRender);
-    Menu *mainMenu = new Menu();    
+    Menu *mainMenu = new Menu(menuFont,12,"blue");    
     mainMenu->font = menuFont;
 
     std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
@@ -103,11 +104,11 @@ int main() {
     std::vector<std::string> editLevel = {"F", "E", "H", "A"}; 
     std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
-    initMenu(topLevel,mainMenu);
-    initMenu(fileLevel,mainMenu, mainMenu->head);
-    initMenu(editLevel, mainMenu, mainMenu->head->sibling);
-    initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
-    initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
+    initMenu(topLevel, mainMenu ,mainMenu->head);
+    initMenu(fileLevel,mainMenu, mainMenu->head->children.at(0));
+    //initMenu(editLevel, mainMenu, mainMenu->head->sibling);
+    //initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
+    //initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
     
     SDL_Texture *mTex = renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
