@@ -1,6 +1,5 @@
 #ifndef MENU_H
 #define MENU_H
-#endif
 
 #include <string>
 #include <vector>
@@ -30,4 +29,4 @@ class Menu {
 
     Menu(fontData *font, int height, std::string bgColor);
 };
-
+#endif

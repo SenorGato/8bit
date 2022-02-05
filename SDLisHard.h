@@ -1,11 +1,11 @@
 #ifndef SDLISHARD_H
 #define SDLISHARD_H
-#endif
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 namespace SDLisHard {
-
-    SDL_Renderer* init(){
-
+    inline SDL_Renderer* init(){
         SDL_Window *win = NULL;
         SDL_Renderer *renderer = NULL;
         if(SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -22,9 +22,9 @@ namespace SDLisHard {
         }
         renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
         return renderer;
-    } 
+    }
 
-    SDL_Texture* renderText(std::string key, fontData *data) {
+    inline SDL_Texture* renderText(std::string key, fontData *data) {
         //I should free the texture here first
         SDL_Surface* textSurface = TTF_RenderText_Solid(data->font,key.c_str(), data->textColor); 
         if(textSurface == NULL) {
@@ -40,3 +40,4 @@ namespace SDLisHard {
         return NULL;
     }
 }
+#endif

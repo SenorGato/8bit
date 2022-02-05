@@ -1,6 +1,5 @@
 #ifndef FONTDATA_H
 #define FONTDATA_H
-#endif
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -15,3 +14,4 @@ struct fontData{
         this->renderer = renderer;
     }
 };
+#endif
