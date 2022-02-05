@@ -1,5 +1,5 @@
 #OBJS defines files to compile
-OBJS = main.cpp 
+OBJS = main.cpp Menu.cpp 
 CC = g++
 COMPILER_FLAGS = -w -g
 LINKER_FLAGS = -lSDL2 -lSDL2_ttf 

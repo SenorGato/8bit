@@ -6,15 +6,27 @@
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "Fontdata.h"
 
+struct menuItem {
+    menuItem* parent;
+    std::vector<menuItem*> children;
+    std::string key;
+    SDL_Texture* renderedSurface;
+
+    menuItem(menuItem* parent, std::string key) {
+    };
+};
 
 class Menu {
-	
-	public:
-    std::string keys;
-	int height;
-    SDL_Surface* menuSurface;
-    Menu(std::vector<std::string> keys, int height);
-    std::vector<Menu> initMenu(std::vector<std::string> keys, int height);
-    bool onClick(); 
+    public:
+    menuItem *head;
+    fontData *font;
+    int height;
+    std::string bgColor;
+    static void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent);
+    static menuItem* fetchMenuItem(std::string key, menuItem* head);
+
+    Menu(fontData *font, int height, std::string bgColor);
 };
+

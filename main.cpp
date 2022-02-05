@@ -3,43 +3,44 @@
 #include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "Menu.h"
 
-struct menuItem {
-    menuItem* parent;
-    std::vector<menuItem*> children;
-    std::string key;
-    SDL_Texture* renderedSurface;
-    
-    menuItem(menuItem* parent, std::string key) {
-        this->parent = parent;
-        this->key = key;
-    };
-};
-
-struct fontData{
-    SDL_Color textColor;
-    TTF_Font* font;
-    SDL_Renderer *renderer;
-    fontData(SDL_Color textColor,TTF_Font* font,SDL_Renderer *renderer){
-        this->textColor = textColor;
-        this->font = font;
-        this->renderer = renderer;
-    }
-};
-
-class Menu {
-    public:
-    menuItem *head;
-    fontData *font;
-    int height;
-    std::string bgColor;
-    Menu(fontData *font, int height, std::string bgColor){
-        this->head = new menuItem{nullptr,""}; 
-        this->font = font;
-        this->height = height;
-        this->bgColor = bgColor;
-    }
-};
+//struct menuItem {
+//    menuItem* parent;
+//    std::vector<menuItem*> children;
+//    std::string key;
+//    SDL_Texture* renderedSurface;
+//    
+//    menuItem(menuItem* parent, std::string key) {
+//        this->parent = parent;
+//        this->key = key;
+//    };
+//};
+//
+//struct fontData{
+//    SDL_Color textColor;
+//    TTF_Font* font;
+//    SDL_Renderer *renderer;
+//    fontData(SDL_Color textColor,TTF_Font* font,SDL_Renderer *renderer){
+//        this->textColor = textColor;
+//        this->font = font;
+//        this->renderer = renderer;
+//    }
+//};
+//
+//class Menu {
+//    public:
+//    menuItem *head;
+//    fontData *font;
+//    int height;
+//    std::string bgColor;
+//    Menu(fontData *font, int height, std::string bgColor){
+//        this->head = new menuItem{nullptr,""}; 
+//        this->font = font;
+//        this->height = height;
+//        this->bgColor = bgColor;
+//    }
+//};
 
 SDL_Renderer* init(){
 
@@ -77,37 +78,35 @@ SDL_Texture* renderText(std::string key, fontData *data) {
     return NULL;
 }
 
-void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent){
-    for(std::string key : keys) {
-        std::cout << "Now your in the children loop.  Key:" << key << std::endl;
-        parent->children.push_back (new menuItem{parent, key});
-        parent->children.back()->renderedSurface = renderText(key,menu->font);
-        std::cout << "end of child for, test assign:" << parent->children.back()->key << std::endl;
-    }
-}
+//void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent){
+//    for(std::string key : keys) {
+//        parent->children.push_back (new menuItem{parent, key});
+//        parent->children.back()->renderedSurface = renderText(key,menu->font);
+//    }
+//}
 
-menuItem* fetchMenuItem(std::string key, menuItem* head){
-    std::cout << "At start of fetchMenu" << std::endl;
-    if(&head->children) {
-        std::cout << "Head has a child->" << &head->children << std::endl;
-        for(menuItem *child : head->children){
-            std::cout << "In the child loop. Child:" << child->key << std::endl;
-            std::cout << "And the key is:" << key << std::endl;
-            if (child->key == key) {
-                std::cout << "We have a match:" << child->key << std::endl;
-                return child;
-            } else {
-                std::cout << "Making recursive call" << std::endl;
-                fetchMenuItem(key, child);
-            }
-        }
-    } else {
-        std::cout << "No childs." << std::endl;
-        if(head->key == key) {
-            return head;
-        }
-    }
-}
+//menuItem* fetchMenuItem(std::string key, menuItem* head){
+////menuItem* foo = fetchMenuItem(key,child); if foo !=nullptr {return foo;} and return nullptr if it doesn't find the item.
+//    std::cout << "At the head of fetchMenuItem.  Head:" << head->key << std::endl;
+//    static menuItem* result;
+//    if(!head->children.empty()) {
+//        std::cout << "Are children." << std::endl;
+//        for(menuItem *child : head->children){
+//            std::cout << "Making recursive call:" << "Child:" << &child << std::endl;
+//            menuItem* result = fetchMenuItem(key,child);
+//        }
+//    } else {
+//        std::cout << "In else" << std::endl;
+//            if (result !=nullptr) {
+//                std::cout << "Returning result:" << result << std::endl;
+//                return result;
+//            } else {
+//                std::cout << "Returing nullptr" << std::endl;
+//                return nullptr;
+//            }
+//
+//    }
+//}
 
 int main() {
 
@@ -127,13 +126,13 @@ int main() {
     std::vector<std::string> editLevel = {"F", "E", "H", "A"}; 
     std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
-    initMenu(topLevel, mainMenu ,mainMenu->head);
-    initMenu(fileLevel,mainMenu, mainMenu->head->children.at(0));
+    Menu::initMenu(topLevel, mainMenu ,mainMenu->head);
+    Menu::initMenu(fileLevel,mainMenu, mainMenu->head->children.at(0));
     //initMenu(editLevel, mainMenu, mainMenu->head->sibling);
     //initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
     //initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
-    menuItem *query = fetchMenuItem("Save As", mainMenu->head);
-    std::cout << "Query->key:" << query->key << std::endl;    
+    menuItem *query = Menu::fetchMenuItem("Save As", mainMenu->head);
+    //std::cout << "Query->key:" << query->key << std::endl;    
     SDL_Texture *mTex = renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
     
