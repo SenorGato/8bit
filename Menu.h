@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "Fontdata.h"
+#include "SDLisHard.h"
 
 struct menuItem {
     menuItem* parent;

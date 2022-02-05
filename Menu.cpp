@@ -12,14 +12,14 @@ Menu::Menu(fontData *font, int height, std::string bgColor) {
         this->bgColor = bgColor;
 }
 
-static void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent) {
+void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent) {
     for(std::string key : keys) {
         parent->children.push_back (new menuItem{parent, key});
-        parent->children.back()->renderedSurface = renderText(key,menu->font);
+        parent->children.back()->renderedSurface = SDLisHard::renderText(key,menu->font);
     }
 }
 
-static menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
+menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
 //menuItem* foo = fetchMenuItem(key,child); if foo !=nullptr {return foo;} and return nullptr if it doesn't find the item.
     std::cout << "At the head of fetchMenuItem.  Head:" << head->key << std::endl;
     static menuItem* result;
