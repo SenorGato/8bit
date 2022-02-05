@@ -1,9 +1,6 @@
 #ifndef SDLISHARD_H
 #define SDLISHARD_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-
 namespace SDLisHard {
     inline SDL_Renderer* init(){
         SDL_Window *win = NULL;

@@ -4,20 +4,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "Menu.h"
-
+#include "SDLisHard.h"
+//Consider implementing color class: https://stackoverflow.com/questions/39662339/what-is-a-good-way-to-store-color
 
 int main() {
 
-    SDL_bool loopShouldStop = SDL_FALSE;
     SDL_Renderer *mRender = SDLisHard::init();
+    SDL_bool loopShouldStop = SDL_FALSE;
     
-    TTF_Font *sans = TTF_OpenFont("/home/senoraraton/bins/8bit/assets/Sans.ttf", 12);
-    
-    if (sans == NULL) {std::cout << "Failed to load the font! SDL_ttf Error:" << TTF_GetError() << std::endl;}
-
-    fontData *menuFont = new fontData({10,100,100}, sans, mRender);
-    Menu *mainMenu = new Menu(menuFont,12,"blue");    
-    mainMenu->font = menuFont;
+    fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100}, mRender);
+    Menu *mainMenu = new Menu(menuFont->font, 20, {255,255,255});    
 
     std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
     std::vector<std::string> fileLevel = {"Open", "Save", "Save As"}; 

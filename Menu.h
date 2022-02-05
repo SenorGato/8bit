@@ -23,10 +23,10 @@ class Menu {
     menuItem *head;
     fontData *font;
     int height;
-    std::string bgColor;
+    std::vector<int> bgColor;
     static void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent);
     static menuItem* fetchMenuItem(std::string key, menuItem* head);
 
-    Menu(fontData *font, int height, std::string bgColor);
+    Menu(fontData *font, int height, std::vector<int> bgColor);
 };
 #endif
