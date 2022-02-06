@@ -6,10 +6,10 @@
 #include "Menu.h"
 
 Menu::Menu(fontData *font, int height, std::vector<int> bgColor) {
-        this->head = new menuItem{nullptr,""}; 
         this->font = font;
         this->height = height;
         this->bgColor = bgColor;
+        this->head = new menuItem{nullptr,""}; 
 }
 
 void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent) {
@@ -21,18 +21,13 @@ void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent)
 
 menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
 //menuItem* foo = fetchMenuItem(key,child); if foo !=nullptr {return foo;} and return nullptr if it doesn't find the item.
-    static menuItem* result;
-    if(!head->children.empty()) {
-        for(menuItem *child : head->children){
-            menuItem* result = fetchMenuItem(key,child);
-        }
-    } else {
-            if (result !=nullptr) {
-                return result;
-            } else {
-                return nullptr;
-            }
+    std::cout << "At head of function.  Key:" << key << " Menuitemkey:"  << head->key << std::endl;
+    if (head->key == key) {
+        std::cout << "Key:" << head->key << std::endl;
+        return head;
+    }
+    for (menuItem *child : head->children){
+        std::cout << "Before Recursive call:" << child << std::endl;
+        return fetchMenuItem(key,child);
     }
 }
-
-

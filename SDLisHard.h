@@ -21,13 +21,13 @@ namespace SDLisHard {
         return renderer;
     }
 
-    inline SDL_Texture* renderText(std::string key, fontData *data) {
+    inline SDL_Texture* renderText(std::string key, fontData *font) {
         //I should free the texture here first
-        SDL_Surface* textSurface = TTF_RenderText_Solid(data->font,key.c_str(), data->textColor); 
+        SDL_Surface* textSurface = TTF_RenderText_Solid(font->font,key.c_str(), font->textColor); 
         if(textSurface == NULL) {
             std::cout << "Unable to render text surface! SDL_ttf Error:" << TTF_GetError() << std::endl;
         } else {
-            SDL_Texture* mTexture = SDL_CreateTextureFromSurface(data->renderer, textSurface);
+            SDL_Texture* mTexture = SDL_CreateTextureFromSurface(font->renderer, textSurface);
             if(mTexture == NULL) {
                 std::cout << "Unable to create from rendered text! SDL Error:" << SDL_GetError() << std::endl;
             }

@@ -13,8 +13,8 @@ int main() {
     SDL_bool loopShouldStop = SDL_FALSE;
     
     fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100}, mRender);
-    Menu *mainMenu = new Menu(menuFont->font, 20, {255,255,255});    
-
+    Menu *mainMenu = new Menu(menuFont, 20, std::vector<int> {255,255,255});    
+    std::cout << "MainMenu Test: " << mainMenu->head << std::endl;
     std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
     std::vector<std::string> fileLevel = {"Open", "Save", "Save As"}; 
     std::vector<std::string> editLevel = {"F", "E", "H", "A"}; 
@@ -22,11 +22,12 @@ int main() {
     std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
     Menu::initMenu(topLevel, mainMenu ,mainMenu->head);
     Menu::initMenu(fileLevel,mainMenu, mainMenu->head->children.at(0));
+    std::cout << "Main Menu Children:" << mainMenu->head->children.at(1)->key << std::endl;
     //initMenu(editLevel, mainMenu, mainMenu->head->sibling);
     //initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
     //initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
-    menuItem *query = Menu::fetchMenuItem("Save As", mainMenu->head);
-    //std::cout << "Query->key:" << query->key << std::endl;    
+    menuItem *q = Menu::fetchMenuItem("Save As", mainMenu->head);
+    std::cout << "Q->key:" << q->key << std::endl;    
     SDL_Texture *mTex = SDLisHard::renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
     

@@ -15,7 +15,9 @@ struct menuItem {
     SDL_Texture* renderedSurface;
 
     menuItem(menuItem* parent, std::string key) {
-    };
+        this->key = key;
+        this->parent = parent;
+    }
 };
 
 class Menu {
