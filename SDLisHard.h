@@ -2,8 +2,7 @@
 #define SDLISHARD_H
 
 namespace SDLisHard {
-    inline SDL_Renderer* init(){
-        SDL_Window *win = NULL;
+    inline SDL_Renderer* init(){ SDL_Window *win = NULL;
         SDL_Renderer *renderer = NULL;
         if(SDL_Init(SDL_INIT_VIDEO) < 0) {
             std::cout << "SDL could not init! SDL_Error:" << SDL_GetError() << std::endl;

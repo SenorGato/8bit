@@ -21,13 +21,14 @@ void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent)
 
 menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
 //menuItem* foo = fetchMenuItem(key,child); if foo !=nullptr {return foo;} and return nullptr if it doesn't find the item.
-    std::cout << "At head of function.  Key:" << key << " Menuitemkey:"  << head->key << std::endl;
     if (head->key == key) {
-        std::cout << "Key:" << head->key << std::endl;
         return head;
     }
     for (menuItem *child : head->children){
-        std::cout << "Before Recursive call:" << child << std::endl;
-        return fetchMenuItem(key,child);
+        menuItem *foo = fetchMenuItem(key,child);
+        if (foo !=nullptr) {
+            return foo;
+        }     
     }
+    return nullptr;
 }
