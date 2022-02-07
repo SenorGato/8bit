@@ -38,6 +38,7 @@ menuItem* Menu::renderMenu(menuItem* head){
     }
     for (menuItem *child : head->children){
         child->renderedSurface = SDLisHard::renderText(child->key,this->font);
+        std::cout << "In child loop.  Child->renderedSurface:" << child->renderedSurface << " Child key:" << child->key << std::endl; 
         menuItem *foo = renderMenu(child);
         if (foo !=nullptr) {
             return foo;

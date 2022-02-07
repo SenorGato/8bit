@@ -12,7 +12,7 @@ struct winInfo{
 };
 
 
-    inline winInfo* init(){ 
+    inline winInfo init(){ 
         SDL_Window* win = nullptr;
         SDL_Renderer* renderer = nullptr;
         if(SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -27,13 +27,14 @@ struct winInfo{
                     std::cout << "Window could not be created! SDL_Error:" << SDL_GetError() << std::endl;
                 } else {
                     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+                    std::cout << "In SDLisHard, renderer:" << renderer << std::endl;
                     if (renderer = NULL) {
                         std::cout << "Renderer could not be created! SDL_Error:" << SDL_GetError() << std::endl;
                     }
                 }
             }
         }
-        return (new winInfo{win,renderer});
+        return winInfo{win,renderer};
     }
 
     inline SDL_Texture* renderText(std::string key, fontData *font) {
