@@ -13,6 +13,9 @@ struct menuItem {
     std::vector<menuItem*> children;
     std::string key;
     SDL_Texture* renderedSurface;
+    bool isVisible;
+    bool onClick();
+    bool onHover();
 
     menuItem(menuItem* parent, std::string key) {
         this->key = key;
@@ -26,8 +29,11 @@ class Menu {
     fontData *font;
     int height;
     std::vector<int> bgColor;
-    static void initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent);
-    static menuItem* fetchMenuItem(std::string key, menuItem* head);
+    void initMenu(std::vector<std::string> keys, menuItem* parent);
+    menuItem* fetchMenuItem(std::string key, menuItem* head);
+    void addElement(std::string key, menuItem *head);
+    void deleteElement(menuItem *dest);
+    menuItem* renderMenu(menuItem* head);
 
     Menu(fontData *font, int height, std::vector<int> bgColor);
 };

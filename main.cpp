@@ -1,33 +1,31 @@
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "Menu.h"
-#include "SDLisHard.h"
 //Consider implementing color class: https://stackoverflow.com/questions/39662339/what-is-a-good-way-to-store-color
 
 int main() {
 
-    SDL_Renderer *mRender = SDLisHard::init();
+    SDLisHard::winInfo* winInfo = SDLisHard::init();
+    //SDL_Renderer *mRender = SDLisHard::init();
     SDL_bool loopShouldStop = SDL_FALSE;
     
-    fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100}, mRender);
+
+//  Main Menu init:
+
+    fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100}, winInfo->renderer);
     Menu *mainMenu = new Menu(menuFont, 20, std::vector<int> {255,255,255});    
-    std::cout << "MainMenu Test: " << mainMenu->head << std::endl;
-    std::vector<std::string> topLevel = {"File", "Edit", "Help", "About"}; 
-    std::vector<std::string> fileLevel = {"Open", "Save", "Save As"}; 
-    std::vector<std::string> editLevel = {"F", "E", "H", "A"}; 
-    std::vector<std::string> helpLevel = {"i", "d", "e", "b"}; 
-    std::vector<std::string> aboutLevel = {"e", "t", "p", "t"}; 
-    Menu::initMenu(topLevel, mainMenu ,mainMenu->head);
-    Menu::initMenu(fileLevel,mainMenu, mainMenu->head->children.at(0));
-    std::cout << "Main Menu Children:" << mainMenu->head->children.at(1)->key << std::endl;
-    //initMenu(editLevel, mainMenu, mainMenu->head->sibling);
-    //initMenu(helpLevel, mainMenu, mainMenu->head->sibling->sibling);
-    //initMenu(aboutLevel, mainMenu, mainMenu->head->sibling->sibling);
-    menuItem *q = Menu::fetchMenuItem("Save As", mainMenu->head);
-    std::cout << "Q->key:" << q->key << std::endl;    
+
+    mainMenu->initMenu({"File", "Edit", "Help", "About"}, mainMenu->head);
+    mainMenu->initMenu({"Open", "Save", "Save As"},  mainMenu->fetchMenuItem("File", mainMenu->head));
+    mainMenu->initMenu({"F", "E", "H", "A"}, mainMenu->fetchMenuItem("Edit", mainMenu->head));
+    mainMenu->initMenu({"i", "d", "e", "b"}, mainMenu->fetchMenuItem("Help", mainMenu->head));
+    mainMenu->initMenu({"x", "t", "p", "t"}, mainMenu->fetchMenuItem("About", mainMenu->head));
+    std::cout << "X:" << mainMenu->fetchMenuItem("About", mainMenu->head)->key << std::endl;
+
     SDL_Texture *mTex = SDLisHard::renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
     
@@ -42,8 +40,8 @@ int main() {
                     break;
             }
         }
-        SDL_RenderClear(mRender);
-        SDL_RenderCopy(mRender,mTex, NULL, dstrect);
-        SDL_RenderPresent(mRender);
+        SDL_RenderClear(winInfo->renderer);
+        SDL_RenderCopy(winInfo->renderer,mTex, NULL, dstrect);
+        SDL_RenderPresent(winInfo->renderer);
     }
 }

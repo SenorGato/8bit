@@ -12,15 +12,14 @@ Menu::Menu(fontData *font, int height, std::vector<int> bgColor) {
         this->head = new menuItem{nullptr,""}; 
 }
 
-void Menu::initMenu(std::vector<std::string> keys, Menu *menu, menuItem* parent) {
+void Menu::initMenu(std::vector<std::string> keys, menuItem* parent) {
     for(std::string key : keys) {
         parent->children.push_back (new menuItem{parent, key});
-        parent->children.back()->renderedSurface = SDLisHard::renderText(key,menu->font);
+        parent->children.back()->renderedSurface = SDLisHard::renderText(key,this->font);
     }
 }
 
 menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
-//menuItem* foo = fetchMenuItem(key,child); if foo !=nullptr {return foo;} and return nullptr if it doesn't find the item.
     if (head->key == key) {
         return head;
     }
@@ -32,3 +31,42 @@ menuItem* Menu::fetchMenuItem(std::string key, menuItem* head){
     }
     return nullptr;
 }
+
+menuItem* Menu::renderMenu(menuItem* head){
+    if (head->renderedSurface != nullptr) {
+        return head;
+    }
+    for (menuItem *child : head->children){
+        child->renderedSurface = SDLisHard::renderText(child->key,this->font);
+        menuItem *foo = renderMenu(child);
+        if (foo !=nullptr) {
+            return foo;
+        }     
+    }
+    return nullptr;
+}
+
+void Menu::addElement(std::string key, menuItem *head){
+    head->children.push_back(new menuItem (head, key));
+    renderMenu(head);
+}
+
+void Menu::deleteElement(menuItem *dest) {
+    for(int i=0; i < dest->parent->children.size(); i++) {
+        if(dest->key == dest->parent->children[i]->key){
+            dest->parent->children.erase(dest->parent->children.begin());
+        }
+    }
+}
+
+   //So if we build a surface for each level upfront, and set its positional data
+   //Then we can just toggle visibility
+   //
+   //If (menu->head->key == NULL) {
+   //   for (child : menu->head->children) {
+   //      child->renderedSurface = renderText(key,menu->font);
+   //   }
+   //} else {
+   //   Your at child level, render
+   //}
+
