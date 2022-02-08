@@ -8,7 +8,7 @@ namespace SDLisHard {
 
 struct winInfo{
     SDL_Window* win;
-    SDL_Renderer* renderer;
+    SDL_Renderer* rend;
 };
 
 
@@ -27,8 +27,7 @@ struct winInfo{
                     std::cout << "Window could not be created! SDL_Error:" << SDL_GetError() << std::endl;
                 } else {
                     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-                    std::cout << "In SDLisHard, renderer:" << renderer << std::endl;
-                    if (renderer = NULL) {
+                    if (renderer == NULL) {
                         std::cout << "Renderer could not be created! SDL_Error:" << SDL_GetError() << std::endl;
                     }
                 }
@@ -52,5 +51,22 @@ struct winInfo{
         }
         return NULL;
     }
+
+    //inline int lenOfStrVec (std::vector<menuItem*> vec){
+    //    int x = 0;
+    //    for(std::string key : vec) {
+    //        x = key.size() + x;
+    //    }
+    //    return x;
+    //}
+    //inline int longestString(std::vector<std::string> keys) {
+    //    unsigned long x = 0;
+    //    for(std::string key : keys) {
+    //        if (key.size() > x) {
+    //            x = key.size();
+    //        }
+    //    }
+    //    return x;
+    //}
 }
 #endif

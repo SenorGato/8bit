@@ -12,7 +12,7 @@ struct menuItem {
     menuItem* parent;
     std::vector<menuItem*> children;
     std::string key;
-    SDL_Texture* renderedSurface;
+    SDL_Texture* texture;
     bool isVisible;
     bool onClick();
     bool onHover();
@@ -27,6 +27,8 @@ class Menu {
     public:
     menuItem *head;
     fontData *font;
+    SDL_Window* win;
+    SDL_Renderer* rend;
     int height;
     std::vector<int> bgColor;
     void initMenu(std::vector<std::string> keys, menuItem* parent);
@@ -34,7 +36,8 @@ class Menu {
     void addElement(std::string key, menuItem *head);
     void deleteElement(menuItem *dest);
     menuItem* renderMenu(menuItem* head);
+    SDL_Texture* buildChildren(menuItem* parent);
 
-    Menu(fontData *font, int height, std::vector<int> bgColor);
+    Menu(fontData *font, int height, std::vector<int> bgColor, SDL_Window* win, SDL_Renderer* rend);
 };
 #endif

@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,26 +9,23 @@
 int main() {
 
     SDLisHard::winInfo winInfo = SDLisHard::init();
-    std::cout << "winInfo:window:" << winInfo.win << " renderer:" << winInfo.renderer << std::endl;
     SDL_bool loopShouldStop = SDL_FALSE;
     
 
 //  Main Menu init:
 
-    fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100}, winInfo.renderer);
-    Menu *mainMenu = new Menu(menuFont, 20, std::vector<int> {255,255,255});    
+    fontData *menuFont = new fontData("/home/senoraraton/bins/8bit/assets/Sans.ttf",12,{10,100,100,0}, winInfo.rend);
+    Menu *mainMenu = new Menu(menuFont, 20, std::vector<int> {255,255,255},winInfo.win,winInfo.rend);    
 
     mainMenu->initMenu({"File", "Edit", "Help", "About"}, mainMenu->head);
     mainMenu->initMenu({"Open", "Save", "Save As"},  mainMenu->fetchMenuItem("File", mainMenu->head));
     mainMenu->initMenu({"F", "E", "H", "A"}, mainMenu->fetchMenuItem("Edit", mainMenu->head));
     mainMenu->initMenu({"i", "d", "e", "b"}, mainMenu->fetchMenuItem("Help", mainMenu->head));
     mainMenu->initMenu({"x", "t", "p", "t"}, mainMenu->fetchMenuItem("About", mainMenu->head));
-    //mainMenu->renderMenu(mainMenu->head);
-    std::cout << "X:" << mainMenu->fetchMenuItem("About", mainMenu->head)->key << std::endl;
+    mainMenu->renderMenu(mainMenu->head);
 
     SDL_Texture *mTex = SDLisHard::renderText("Testing",menuFont);
     SDL_Rect *dstrect = new SDL_Rect {0,0,100,100};
-    std::cout << "Renderer check:" << winInfo.renderer << std::endl;
     while (!loopShouldStop) {
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -41,8 +37,8 @@ int main() {
                     break;
             }
         }
-        SDL_RenderClear(winInfo.renderer);
-        SDL_RenderCopy(winInfo.renderer,mTex, NULL, dstrect);
-        SDL_RenderPresent(winInfo.renderer);
+        SDL_RenderClear(winInfo.rend);
+        SDL_RenderCopy(winInfo.rend,mTex, NULL, dstrect);
+        SDL_RenderPresent(winInfo.rend);
     }
 }
