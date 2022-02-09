@@ -22,7 +22,7 @@ struct winInfo{
             if(TTF_Init() == -1) {
                 std::cout << "SDF_ttf could not initalize! SDL_ttf Error:" << TTF_GetError() << std::endl;
             } else {
-               win = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN);        
+               win = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 1000, SDL_WINDOW_SHOWN);        
                 if (win == NULL) {
                     std::cout << "Window could not be created! SDL_Error:" << SDL_GetError() << std::endl;
                 } else {
