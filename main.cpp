@@ -40,7 +40,7 @@ int main() {
             }
         }
         SDL_RenderClear(winInfo.rend);
-        SDL_RenderCopy(winInfo.rend,mTex, NULL, NULL);
+        //SDL_RenderCopy(winInfo.rend,mTex, NULL, NULL);
         SDL_RenderPresent(winInfo.rend);
     }
 }
